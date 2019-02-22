@@ -13,6 +13,8 @@ def tranfer_video(inputPath):
         q.put(file)
     while not q.empty():
         video = q.get()
+
+        ## transfer to 480p video
         async def transfer_video_for_480p():
             print('start to transfer')
             subprocess.call('ffmpeg -i /Users/kobale/exercise2/Input/'
@@ -21,6 +23,7 @@ def tranfer_video(inputPath):
                             + str(j) + '.mp4', shell = True)
             return '480p videos have been all transformed'
 
+        ## transfer to 720p video
         async def transfer_video_for_720p():
             print('start to transfer')
             subprocess.call('ffmpeg -i /Users/kobale/exercise2/Input/'
@@ -29,7 +32,7 @@ def tranfer_video(inputPath):
                             + str(j) + '.mp4', shell = True)
             return '720p videos have been all transformed'
 
-
+        ## queue
         threadings = [asyncio.ensure_future(transfer_video_for_480p()), asyncio.ensure_future(transfer_video_for_720p()),]
         loop = asyncio.get_event_loop()
         loop.run_until_complete(asyncio.wait(threadings))
@@ -38,14 +41,18 @@ def tranfer_video(inputPath):
             print('Task: ', threading.result())
         j += 1
         q.task_done()
+
     print(str(j - 1) + ' videos have been transferred into 720p and 480p type')
 
 def main():
-    startTime = time.process_time()
-    tranfer_video('/Users/kobale/exercise2/Input')
-    consumedTime = time.process_time() - startTime
-    print("The consumed time is :", consumedTime)
 
+    startTime = time.process_time()
+
+    tranfer_video('/Users/kobale/exercise2/Input')
+
+    consumedTime = time.process_time() - startTime
+
+    print("The consumed time is :", consumedTime)
 
 if __name__=='__main__':
     main()
