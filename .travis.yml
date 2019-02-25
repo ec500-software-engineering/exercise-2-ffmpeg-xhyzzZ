@@ -13,5 +13,5 @@ install: pip install -r requirements.txt
 
 script:
 - flake8 --extend-ignore=W,E1,E2,E3,E5
-- pytest -v
+- pytest
 
